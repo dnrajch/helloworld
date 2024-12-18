@@ -45,10 +45,10 @@ pipeline {
     
 
     post {
-        always {
-            // Clean up any temporary files or actions
-            cleanWs()
-        }
+        // always {
+        //     // Clean up any temporary files or actions
+        //     // cleanWs()
+        // }
         success {
             echo 'Deployment successful!'
         }
