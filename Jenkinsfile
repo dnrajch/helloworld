@@ -4,13 +4,18 @@ pipeline {
     environment {
         // Define environment variables
         DOCKER_IMAGE = "first-app"  // Name of your Docker image
+        REPO_URL = "git@github.com:dnrajch/helloworld.git"
+        BRANCH_NAME = "main"
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 // Checkout the code from your repository
-                git 'git@github.com:dnrajch/helloworld.git'  // Replace with your repo URL
+                git(
+                        url: "${REPO_URL}",
+                        branch: "${BRANCH_NAME}"
+                    )
             }
         }
 
