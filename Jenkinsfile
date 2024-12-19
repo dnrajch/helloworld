@@ -6,6 +6,10 @@ pipeline {
         DOCKER_IMAGE = "first-app"  // Name of your Docker image
         REPO_URL = "git@github.com:dnrajch/helloworld.git"
         BRANCH_NAME = "main"
+        AWS_REGION = "ap-south-1"
+        ECR_REGISTRY = "443370700928.dkr.ecr.ap-south-1.amazonaws.com"
+        ECR_REPOSITORY = "myapps"
+        IMAGE_TAG = "latest"
     }
 
     stages {
@@ -25,7 +29,12 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile in the repository
-                    docker.build(DOCKER_IMAGE)
+                    docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
+                    sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+                        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+                    """
                 }
             }
         }
