@@ -6,6 +6,7 @@ pipeline {
         DOCKER_IMAGE = "first-app"  // Name of your Docker image
         REPO_URL = "git@github.com:dnrajch/helloworld.git"
         BRANCH_NAME = "main"
+        
     }
 
     stages {
