@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         // Define environment variables
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id') 
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         DOCKER_IMAGE = "first-app"  
         REPO_URL = "git@github.com:dnrajch/helloworld.git"
         BRANCH_NAME = "main"
@@ -30,14 +28,19 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    withCredentials([usernamePassword(credentialsId: '6e0e2039-7f20-409b-af2f-f3a5c43df75d', passwordVariable: 'aws-secret-access-key', usernameVariable: 'aws-access-key-id')]) {
+    // some block
+
                     // Build the Docker image using the Dockerfile in the repository
-                    docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
-                    sh """
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
-                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
-                        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
-                    """
+                        docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
+                        sh """
+                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+                            docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+                        """
+                    }
                 }
+
             }
         }
 
