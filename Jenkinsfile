@@ -48,7 +48,7 @@ pipeline {
 
     post {
         always {
-            Clean up any temporary files or actions
+            // Clean up any temporary files or actions
             cleanWs()
         }
         success {
