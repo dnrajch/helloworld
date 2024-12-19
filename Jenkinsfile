@@ -11,11 +11,13 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout the code from your repository
-                git(
-                        url: "${REPO_URL}",
-                        branch: "${BRANCH_NAME}"
-                    )
+                sshagent(['id_rsa']) {
+                    // Checkout the code from your repository
+                    git(
+                            url: "${REPO_URL}",
+                            branch: "${BRANCH_NAME}"
+                        )
+                }
             }
         }
 
