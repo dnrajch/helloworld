@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         // Define environment variables
-        DOCKER_IMAGE = "first-app"  // Name of your Docker image
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id') 
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        DOCKER_IMAGE = "first-app"  
         REPO_URL = "git@github.com:dnrajch/helloworld.git"
         BRANCH_NAME = "main"
         AWS_REGION = "ap-south-1"
