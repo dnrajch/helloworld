@@ -34,6 +34,9 @@ pipeline {
                     // Build the Docker image using the Dockerfile in the repository
                         docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
                         sh """
+                            export AWS_ACCESS_KEY_ID=${aws-access-key-id}
+                            export AWS_SECRET_ACCESS_KEY=${aws-secret-access-key}
+                            export AWS_DEFAULT_REGION=${AWS_REGION}
                             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
                             docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
                             docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
