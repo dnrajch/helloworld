@@ -33,6 +33,8 @@ pipeline {
                 script {
                         sh """
                             
+                            docker stop myapp-container || true  # Stop running container (if any)
+                            docker rm myapp-container || true  # Remove old container (if any)
                             docker run -d --name myapp-container -p 80:5000 first-app  # Run new container
                             
                         """
